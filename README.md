@@ -7,5 +7,6 @@ Follow the instructions in each question folder.
 
 When complete, send a link to the repo so that it can be reviewed.
 
-#### Thank you for applying to Sourcetoad
+#### Name: James Singletary
 
+#### Thank you for applying to Sourcetoad
