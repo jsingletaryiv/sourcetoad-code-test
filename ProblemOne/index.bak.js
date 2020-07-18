@@ -67,11 +67,13 @@ var arr = [
 
 function mutateArray(a) {
   /**  
-   * Solution #2: Leveraging Object Deconstruction (ES6+)
-   * Thoughts for solution include:
+   * Solution: Leveraging Recursion Functions (ES6)
+   * Inital thoughts for solution include:
    * => Loop through array finding all iterable objects 
-   * => Then `deconstruct` each object and create a new object in the disred format 
-   * => Utilize the new `spread` operator to create an updated object array 
+   * => Then loop / iterate through each object
+   * => Create `recursive` function that will examine all nested properties
+   * => Build new object based on the key / value pairs found in `recursive` logic
+   * => Add new object to a new array that will be returned and displayed in DOM 
   */
 
   let flatArray = [];
@@ -92,33 +94,42 @@ function mutateArray(a) {
 
   function examineObject(currObject) {
     let flatObject = {};
-    
-    // Begin deconstruction of currObject parameter by using the `{...}`
-    // NOTE: For the sake understanding the solution, all key/value pairs are being deconstructed and mapped  
-    const { guest_type: guestType, first_name: firstName, last_name: lastName, 
-            guest_booking: { room_no: roomNumber, some_array: someArray }} = currObject;
+    flattenObject(currObject, '');
 
-    console.log('guestType: ', guestType);
-    console.log('firstName: ', firstName);
-    console.log('lastName: ', lastName);
-    console.log('roomNumber: ', roomNumber);
-    console.log('someArray: ', someArray);
+    function flattenObject(currObject, parentKey) {
+      // Identify and flatten nested key / value pairs using recursion
+      for (let key in currObject) {
+        let propValue = currObject[key];
+        // Verify the iterated data type and whether or not to continue recursion
+        // Recursion Safeguard - Prevents recursion if property value is object literal   
+        if (propValue.constructor !== Object) {
+          if (parentKey == null || parentKey == '') {
+            flatObject[key] = propValue;
 
-    flatObject = deconObject(currObject);
-
-    // Pass in the deconstructed object values (I got `undefined` when using mapped identifiers)
-    // NOTE: I know this example is not very modular and should have recursion logic to work with
-    // any object. For brevity, I'm assuming that all data sets will contain same props
-    function deconObject({ guest_type, first_name, last_name, guest_booking: { room_no, some_array }}) {
-      let reconObject = { guest_type, first_name, last_name, room_no, some_array }
-      console.log('reconObject:', reconObject);
-      return reconObject;
+          } else {
+            if (key == null || key == '') {
+              flatObject[parentKey] = propValue;
+  
+            } else {
+              flatObject[parentKey + '.' + key] = propValue;
+            }
+          }
+  
+        } else {
+          if (parentKey == null || parentKey == '') {
+            flattenObject(propValue, key);
+  
+          } else {
+            flattenObject(propValue, parentKey + '.' + key);
+          }
+        }
+      }
     }
 
-    // console.log('Flat Object: ', flatObject);
+    console.log('Flat Object: ', flatObject);
     return flatObject;
   }
-
+  
   return flatArray;
 }
 
