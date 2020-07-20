@@ -69,59 +69,57 @@ var arr = [
  * Solution #2: Leveraging Object Destructuring (ES6+)
  * Thoughts for solution include:
  * => Loop through array finding all iterable objects 
- * => Then `destructure` each object and create a new object in the disred format
- * => Utilize the `spread` operator to help create updated object array 
+ * => Then `destruct` each object and `construct` the new object
+ * => Possible use of:
+ *   -> Array / Object Destructuring
+ *   -> Spread Operator {...}
+ *   -> Use of `.map(), .sort(), .reduce()` methods
 */
 
 function mutateArray(a) {
 
   let flatArray = [];
   // Commence Destructuring
+  console.group('Guest List:');
   examineArray(a);
+  console.groupEnd();
 
   async function examineArray(currArray) {
-    console.log('Guest List: ', currArray);
+    console.log('Original Array: ', currArray);
     // Find iterable objects to flatten
+    console.group('Guest Data:');
     for (let i in currArray) {
       let currObject = currArray[i];
-      // console.log('Guest Info: ', currObject);
+      console.groupCollapsed('Guest ' + i + ': ');
+      console.log('Original Object: ', currObject);
       let result = examineObject(currObject);
+      console.groupEnd();
       // Add flat object to array
       flatArray.push(result);
     }
+    console.groupEnd();
   }
 
+  // NOTE: For the sake of understanding this solution, its assumed that `currObject` will always have the same dataset structure (keys)  
   function examineObject(currObject) {
-    let flatObject = {};
+    let flatObject = destructObject(currObject);
     
-    // Begin destructuring of currObject parameter by using the `{...}`
-    // NOTE: For the sake of understanding this solution, its assumed that `currObject` will always have the same dataset structure (keys)  
-    // const { guest_type: guestType, first_name: firstName, last_name: lastName, 
-    //         guest_booking: { room_no: roomNumber, some_array: someArray }} = currObject;
-
-    // console.group('guest data:');
-    // console.log('guestType: ', guestType);
-    // console.log('firstName: ', firstName);
-    // console.log('lastName: ', lastName);
-    // console.log('roomNumber: ', roomNumber);
-    // console.log('someArray: ', someArray);
-    // console.groupEnd();
-
-    flatObject = destructObject(currObject);
-
     // Unpack data from object and pass in each field as parameter
-    // NOTE: I know this example is not very modular and should have recursion logic to work with
-    // any object. For brevity, I'm assuming that all data sets will contain same keys
     function destructObject({ guest_type, first_name, last_name, guest_booking: { room_no, some_array: someArray }}) {
-      let constructObject = { guest_type, first_name, last_name, room_no, 'some_array': someArray }
-      console.log('constructObject:', constructObject);
+      // Calculate the sum of the values in `some_array` then replace it with `some_total`    
+      const someTotal = someArray.reduce((a, b) => a + b, 0);
+      let constructObject = { guest_type, first_name, last_name, room_no, 'some_total': someTotal }
+      
+      console.log('Mutated Object:', constructObject);
       return constructObject;
     }
 
-    // console.log('Flat Object: ', flatObject);
     return flatObject;
   }
 
+  console.group('New Array:');
+  console.log(flatArray);
+  console.groupEnd();
   return flatArray;
 }
 
