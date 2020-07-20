@@ -3,7 +3,7 @@
  * @description   Provide code examples for employment consideration.
  * 
  * @author        Sourcetoad
- * @name          James Singletary
+ * @name          James_Singletary
  * 
  * @copyright     Sourcetoad 2020
 */
@@ -65,17 +65,18 @@ var arr = [
   },
 ];
 
+/**  
+ * Solution #2: Leveraging Object Destructuring (ES6+)
+ * Thoughts for solution include:
+ * => Loop through array finding all iterable objects 
+ * => Then `destructure` each object and create a new object in the disred format
+ * => Utilize the `spread` operator to help create updated object array 
+*/
+
 function mutateArray(a) {
-  /**  
-   * Solution #2: Leveraging Object Deconstruction (ES6+)
-   * Thoughts for solution include:
-   * => Loop through array finding all iterable objects 
-   * => Then `deconstruct` each object and create a new object in the disred format 
-   * => Utilize the new `spread` operator to create an updated object array 
-  */
 
   let flatArray = [];
-  // Commence flattening
+  // Commence Destructuring
   examineArray(a);
 
   async function examineArray(currArray) {
@@ -93,26 +94,28 @@ function mutateArray(a) {
   function examineObject(currObject) {
     let flatObject = {};
     
-    // Begin deconstruction of currObject parameter by using the `{...}`
-    // NOTE: For the sake understanding the solution, all key/value pairs are being deconstructed and mapped  
-    const { guest_type: guestType, first_name: firstName, last_name: lastName, 
-            guest_booking: { room_no: roomNumber, some_array: someArray }} = currObject;
+    // Begin destructuring of currObject parameter by using the `{...}`
+    // NOTE: For the sake of understanding this solution, its assumed that `currObject` will always have the same dataset structure (keys)  
+    // const { guest_type: guestType, first_name: firstName, last_name: lastName, 
+    //         guest_booking: { room_no: roomNumber, some_array: someArray }} = currObject;
 
-    console.log('guestType: ', guestType);
-    console.log('firstName: ', firstName);
-    console.log('lastName: ', lastName);
-    console.log('roomNumber: ', roomNumber);
-    console.log('someArray: ', someArray);
+    // console.group('guest data:');
+    // console.log('guestType: ', guestType);
+    // console.log('firstName: ', firstName);
+    // console.log('lastName: ', lastName);
+    // console.log('roomNumber: ', roomNumber);
+    // console.log('someArray: ', someArray);
+    // console.groupEnd();
 
-    flatObject = deconObject(currObject);
+    flatObject = destructObject(currObject);
 
-    // Pass in the deconstructed object values (I got `undefined` when using mapped identifiers)
+    // Unpack data from object and pass in each field as parameter
     // NOTE: I know this example is not very modular and should have recursion logic to work with
-    // any object. For brevity, I'm assuming that all data sets will contain same props
-    function deconObject({ guest_type, first_name, last_name, guest_booking: { room_no, some_array }}) {
-      let reconObject = { guest_type, first_name, last_name, room_no, some_array }
-      console.log('reconObject:', reconObject);
-      return reconObject;
+    // any object. For brevity, I'm assuming that all data sets will contain same keys
+    function destructObject({ guest_type, first_name, last_name, guest_booking: { room_no, some_array: someArray }}) {
+      let constructObject = { guest_type, first_name, last_name, room_no, 'some_array': someArray }
+      console.log('constructObject:', constructObject);
+      return constructObject;
     }
 
     // console.log('Flat Object: ', flatObject);
