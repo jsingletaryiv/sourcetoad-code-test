@@ -77,7 +77,6 @@ var arr = [
 */
 
 function mutateArray(a) {
-
   let flatArray = [];
   // Commence Destructuring
   console.group('Guest List:');
@@ -89,10 +88,10 @@ function mutateArray(a) {
     // Find iterable objects to flatten
     console.group('Guest Data:');
     for (let i in currArray) {
-      let currObject = currArray[i];
+      const currObject = currArray[i];
       console.groupCollapsed('Guest ' + i + ': ');
       console.log('Original Object: ', currObject);
-      let result = examineObject(currObject);
+      const result = examineObject(currObject);
       console.groupEnd();
       // Add flat object to array
       flatArray.push(result);
@@ -102,25 +101,30 @@ function mutateArray(a) {
 
   // NOTE: For the sake of understanding this solution, its assumed that `currObject` will always have the same dataset structure (keys)  
   function examineObject(currObject) {
-    let flatObject = destructObject(currObject);
+    const flatObject = destructObject(currObject);
     
     // Unpack data from object and pass in each field as parameter
     function destructObject({ guest_type, first_name, last_name, guest_booking: { room_no, some_array: someArray }}) {
       // Calculate the sum of the values in `some_array` then replace it with `some_total`    
       const someTotal = someArray.reduce((a, b) => a + b, 0);
-      let constructObject = { guest_type, first_name, last_name, room_no, 'some_total': someTotal }
+      const restructObject = { guest_type, first_name, last_name, room_no, 'some_total': someTotal }
       
-      console.log('Mutated Object:', constructObject);
-      return constructObject;
+      console.log('Mutated Object:', restructObject);
+      return restructObject;
     }
 
     return flatObject;
   }
 
-  console.group('New Array:');
-  console.log(flatArray);
+  // NOTE: I would normally take this type of logic and make component-based and modular - again, for brevity... 
+  // Filter `flatArray` to only show `guest_type` of guest
+  const getGuests = flatArray.filter(manifest => manifest.guest_type.toLowerCase() == 'guest');
+  const getCrew = flatArray.filter(manifest => manifest.guest_type.toLowerCase() == 'crew');
+  console.group('New "Flattened" Array:');
+  console.log('Filter: Guests', getGuests);
+  console.log('Filter: Crew', getCrew);
   console.groupEnd();
-  return flatArray;
+  return getGuests;
 }
 
 $(document).ready(function() {
