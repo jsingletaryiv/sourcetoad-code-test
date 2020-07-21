@@ -1,6 +1,7 @@
 /**
  * @summary       Front-End Developer Test
  * @description   Provide code examples for employment consideration.
+ * @emits         Console.* I left them in and added some groups to tidy up the log. Switch over to the `master` branch for no logs.
  * 
  * @author        Sourcetoad
  * @name          James_Singletary
@@ -116,15 +117,51 @@ function mutateArray(a) {
     return flatObject;
   }
 
-  // NOTE: I would normally take this type of logic and make component-based and modular - again, for brevity... 
+  // NOTE: This should be a reusable component but again, for brevity...
+  const sortBy = function(key, minor) {
+    return function(o, p) {
+      let a, b;
+      let result;
+      
+      // Safeguard - Only sorting object literals at this time
+      if(o && p && typeof o === 'object' && typeof p === 'object') {
+        a = o[key];
+        b = p[key];
+
+        if(a === b) {
+          return typeof minor === 'function' ? minor(o, p) : 0;
+        }
+
+        if(typeof a === typeof b) {
+          result = a < b ? -1 : 1;
+        } else {
+          result = typeof a < typeof b ? -1 : 1;
+        }
+
+        return result;
+
+      } else {
+        throw {
+          name: 'Error',
+          message: 'Expected an object when sorting by ' + key
+        };
+      }
+    };
+  }
+
+  // NOTE: I would normally take this type of logic and make component-based and modular
   // Filter `flatArray` to only show `guest_type` of guest
-  const getGuests = flatArray.filter(manifest => manifest.guest_type.toLowerCase() == 'guest');
-  const getCrew = flatArray.filter(manifest => manifest.guest_type.toLowerCase() == 'crew');
+  const filterGuests = flatArray.filter(manifest => manifest.guest_type.toLowerCase() == 'guest');
+  const filterCrew = flatArray.filter(manifest => manifest.guest_type.toLowerCase() == 'crew');
+
   console.group('New "Flattened" Array:');
-  console.log('Filter: Guests', getGuests);
-  console.log('Filter: Crew', getCrew);
+  console.log('Filter: Guests', filterGuests);
+  console.log('Filter: Crew', filterCrew);
   console.groupEnd();
-  return getGuests;
+
+  // Sort and return the array in `ASC` alphabetical order by `last_name` / `first_name`
+  const sortedGuests = filterGuests.sort(sortBy('last_name', sortBy('first_name')));
+  return sortedGuests;
 }
 
 $(document).ready(function() {
