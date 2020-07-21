@@ -79,11 +79,11 @@ var arr = [
 
 function mutateArray(a) {
   let flatArray = [];
-  // Commence Destructuring
   console.group('Guest List:');
   examineArray(a);
   console.groupEnd();
-
+  
+  // Commence Destructuring
   async function examineArray(currArray) {
     console.log('Original Array: ', currArray);
     // Find iterable objects to flatten
@@ -103,7 +103,6 @@ function mutateArray(a) {
   // NOTE: For the sake of understanding this solution, its assumed that `currObject` will always have the same dataset structure (keys)  
   function examineObject(currObject) {
     const flatObject = destructObject(currObject);
-    
     // Unpack data from object and pass in each field as parameter
     function destructObject({ guest_type, first_name, last_name, guest_booking: { room_no, some_array: someArray }}) {
       // Calculate the sum of the values in `some_array` then replace it with `some_total`    
@@ -122,7 +121,6 @@ function mutateArray(a) {
     return function(o, p) {
       let a, b;
       let result;
-      
       // Safeguard - Only sorting object literals at this time
       if(o && p && typeof o === 'object' && typeof p === 'object') {
         a = o[key];
@@ -137,7 +135,7 @@ function mutateArray(a) {
         } else {
           result = typeof a < typeof b ? -1 : 1;
         }
-
+        
         return result;
 
       } else {
@@ -149,7 +147,7 @@ function mutateArray(a) {
     };
   }
 
-  // NOTE: I would normally take this type of logic and make component-based and modular
+  // NOTE: I would normally create a utility component to handle this type of logic however, for this example...
   // Filter `flatArray` to only show `guest_type` of guest
   const filterGuests = flatArray.filter(manifest => manifest.guest_type.toLowerCase() == 'guest');
   const filterCrew = flatArray.filter(manifest => manifest.guest_type.toLowerCase() == 'crew');
@@ -163,7 +161,7 @@ function mutateArray(a) {
   const sortedGuests = filterGuests.sort(sortBy('last_name', sortBy('first_name')));
   return sortedGuests;
 }
-
+// Ok - Render the DOM
 $(document).ready(function() {
     $('#originalArray').html(JSON.stringify(arr, null, 2));
     $('#resultsArray').html(JSON.stringify(mutateArray(arr), null, 2));
