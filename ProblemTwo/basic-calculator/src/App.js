@@ -8,7 +8,7 @@ function App() {
       <main className="app-container">
         <div className="app-header">
           <h1>Simple Calculator</h1>
-          <small>...A work in progress.</small>
+          <small><strong>by:</strong> James Singletary <strong>for:</strong> Sourcetoad</small>
         </div>
         <Calculator></Calculator>
       </main>
