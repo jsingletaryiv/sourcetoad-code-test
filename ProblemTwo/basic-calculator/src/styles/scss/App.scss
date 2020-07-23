@@ -1,0 +1,133 @@
+@import './settings';
+@import './global';
+
+@import '../../../node_modules/foundation-sites/scss/foundation';
+
+.app {
+  text-align: center;
+  @include xy-grid-container;
+}
+
+.app-container {
+  background-color: rgba(58, 71, 85, 1);
+  min-height: 100vh;
+  width: auto;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // justify-content: center;
+  // color: rgba(255, 255, 255, 1);
+}
+
+.app-header {
+  margin: 40px 0 50px 0;
+  color: rgba(255, 255, 255, 1);
+}
+
+.calculator-container {
+  @include xy-grid;
+}
+
+.calculator {
+  @include xy-cell(12);
+  @include breakpoint(large) {
+    @include xy-cell(3);
+    @include xy-cell-offset(2);
+  }
+
+	width: 320px;
+	height: 450px;
+	background-color: #eaedef;
+	margin: 0 auto;
+	top: 20px;
+	position: relative;
+	border-radius: 5px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  // box-shadow: 10px 5px 5px black;
+
+  .display {
+    height:100px;
+    width: auto;
+    background-color: rgba(32, 32, 32, 1);
+    color: rgba(255, 255, 255, 1);
+    text-align: right;
+    font-size: 48px;
+    padding: 10px 15px;
+    overflow: hidden;
+  }
+
+  .calculator-buttons {
+    @include xy-grid-layout(4, 'button');
+    height: 450px;
+  }
+
+  button {
+    @include button;
+    margin: 0;
+    width: 25%;
+    height: 20%;
+    // General color for buttons
+    @include button-style(rgba(200, 201, 204, 1), auto, auto);
+    // Buton overrides
+    &.btn-number {
+      @include button-style(rgba(212, 214, 215, 1), auto, auto);
+    }
+    
+    &.btn-operator {
+      @include button-style(rgba(235, 148, 57, 1), auto, auto);
+      color: rgba(255, 255, 255, 1);
+    }
+    
+    &.btn-equal {
+      @include button-style(rgba(235, 148, 57, 1), auto, auto);
+    }
+    
+    &.btn-reset {
+      @include button-style(rgba(200, 201, 202, 1), auto, auto);
+    }
+
+    &.btn-zero {
+      width: 50%;
+      text-align: left;
+      padding-left: 1.8rem;
+    }
+  }
+}
+
+.calculator-stack {
+  @include xy-cell(12);
+  @include breakpoint(medium) {
+    @include xy-cell(2);
+    @include xy-cell-offset(1);
+  }
+
+  & h4 {
+    color: rgba(255, 255, 255, 1);
+  }
+}
+
+table {
+  @include table;
+}
+
+/* ---- Auto-Generated Classes via `create-react-app` CLI ---- */  
+// TODO: Pending removal is not needed
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
